@@ -9,13 +9,9 @@ export default function App() {
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/posts">Posts</Link>
-            </li>
+          <ul className={"navigationBar"}>
+            <Link to="/">Home</Link>
+            <Link to="/posts">Posts</Link>
           </ul>
         </nav>
 
