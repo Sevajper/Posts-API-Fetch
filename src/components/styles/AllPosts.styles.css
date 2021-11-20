@@ -20,6 +20,11 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
+
+.header:hover {
+  text-shadow: 1px 1px;
+  cursor: pointer;
+}
 .postWrapper {
   background-color: #eeeeee;
   padding: 0 40px;
@@ -48,6 +53,20 @@
 
 .postBody {
   font-size: 22px;
+}
+
+.toggleCommentsButton {
+  width: fit-content;
+  padding: 5px;
+  color: #1a0dab;
+  cursor: pointer;
+  margin-bottom: 5px;
+  font-size: 18px;
+  user-select: none;
+}
+
+.toggleCommentsButton:hover {
+  background-color: #bbe1fa;
 }
 
 .commentSection {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import fetchInfo from "./FetchInfo";
 import { apiPostsUrl, apiUsersUrl, apiCommentsUrl } from "./Urls";
-import { getFullPostWithComments } from "./HandleInfo";
+import getFullPostWithComments from "./HandleInfo";
 import { user, post, comment } from "./types/PostInterfaces";
 import "./styles/AllPosts.styles.css";
 
@@ -12,6 +12,13 @@ const AllPosts = (): JSX.Element => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
+
+  const [openComment, setOpenComment] = useState([0]);
+  const toggleComment = (postId: number) => {
+    !openComment.includes(postId)
+      ? setOpenComment((prevArray) => [...prevArray, postId])
+      : setOpenComment((prevArray) => prevArray.filter((id) => id !== postId));
+  };
 
   useEffect(() => {
     (async () => {
@@ -32,7 +39,13 @@ const AllPosts = (): JSX.Element => {
 
   return (
     <div className={"allPosts"}>
-      {getFullPostWithComments(postInfo, userInfo, commentInfo)}
+      {getFullPostWithComments(
+        postInfo,
+        userInfo,
+        commentInfo,
+        toggleComment,
+        openComment
+      )}
     </div>
   );
 };
