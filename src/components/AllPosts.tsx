@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import fetchInfo from "./FetchInfo";
 import { apiPostsUrl, apiUsersUrl, apiCommentsUrl } from "./Urls";
-import { getFullPostWithComments } from "./GetFunctions";
-import { user, post, comment } from "./Types/ForumInterfaces";
-import "./Posts.styles.css";
+import { getFullPostWithComments } from "./HandleInfo";
+import { user, post, comment } from "./types/PostInterfaces";
+import "./styles/AllPosts.styles.css";
 
-const Posts = (): JSX.Element => {
+const AllPosts = (): JSX.Element => {
   const [postInfo, setPostInfo] = useState<post[]>([]);
   const [userInfo, setUserInfo] = useState<user[]>([]);
   const [commentInfo, setCommentInfo] = useState<comment[]>([]);
@@ -27,14 +27,14 @@ const Posts = (): JSX.Element => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>"Loading..."</div>;
+  if (loading) return <div>"Loading..."</div>; // Skeleton-UI ?
   if (error) return <div>"Error!"</div>;
 
   return (
-    <div>
-      <div>{getFullPostWithComments(postInfo, userInfo, commentInfo)}</div>
+    <div className={"allPosts"}>
+      {getFullPostWithComments(postInfo, userInfo, commentInfo)}
     </div>
   );
 };
 
-export default Posts;
+export default AllPosts;

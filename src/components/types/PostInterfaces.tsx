@@ -1,8 +1,8 @@
 export interface post {
+  id: number;
+  userId: number;
   title: string;
   body: string;
-  userId: number;
-  id: number;
 }
 
 export interface user {
@@ -11,8 +11,8 @@ export interface user {
 }
 
 export interface comment {
-  postId: number;
-  body: string;
   id: number;
+  postId: number;
   name: string;
+  body: string;
 }
