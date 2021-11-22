@@ -10,10 +10,19 @@ import {
 export const getAllPostsWithComments = (
   toggleComment: (postId: number) => void,
   openComment: number[],
-  { allInfo, navigate }: allPosts
+  { allInfo, navigate }: allPosts,
+  filteredUserInfoArray?: number[]
 ) => {
-  const [postInfo, userInfo, commentInfo] = allInfo;
+  const postInfo = allInfo[0];
+  const commentInfo = allInfo[2];
+  let userInfo: any;
+
+  !filteredUserInfoArray
+    ? (userInfo = allInfo[1])
+    : (userInfo = filteredUserInfoArray);
+
   const allPostsArray: Array<JSX.Element> = [];
+  console.log(filteredUserInfoArray);
 
   postInfo.forEach((post: post) => {
     userInfo.forEach((user: user) => {
@@ -48,6 +57,7 @@ export const getAllPostsWithComments = (
       }
     });
   });
+
   return allPostsArray;
 };
 
@@ -109,5 +119,33 @@ export const getSinglePost = (post: post, user: user) => {
       <div className={"separator"} />
       <div className={"postBody"}>{post.body}</div>
     </>
+  );
+};
+
+export const getFilteredPosts = (
+  toggleComment: (postId: number) => void,
+  openComment: number[],
+  searchInput: string,
+  props: allPosts
+) => {
+  const userInfo = props.allInfo[1];
+  const filteredUserInfoArray: any[] = [];
+
+  userInfo.filter((user: any) =>
+    Object.keys(user).forEach((key) => {
+      if (
+        String(user[key]).includes(searchInput) &&
+        !filteredUserInfoArray.find((userObj) => userObj.id === user.id)
+      ) {
+        filteredUserInfoArray.push(user);
+      }
+    })
+  );
+
+  return getAllPostsWithComments(
+    toggleComment,
+    openComment,
+    props,
+    filteredUserInfoArray
   );
 };
