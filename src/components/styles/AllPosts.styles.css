@@ -14,7 +14,8 @@
   margin-bottom: 10px;
 }
 
-.header {
+.header,
+.singlePostHeader {
   margin-bottom: 12px;
   padding: 20px;
   border-top-left-radius: 20px;
@@ -37,6 +38,7 @@
   margin: 16px;
   padding: 20px;
   background-color: #ffffff;
+  min-width: 1200px;
 }
 
 .title {

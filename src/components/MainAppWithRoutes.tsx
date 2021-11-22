@@ -1,20 +1,28 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import AllPosts from "./AllPosts";
-import SinglePost from "./SinglePost";
 import pageNotFound from "./ErrorHandling";
-import withHello from "./HOCs";
+import { withHello, withFetchAndHello } from "./HOCs";
+import SinglePost from "./SinglePost";
+
+export const helloMessage = "Hello from";
 
 export default function MainAppWithRoutes() {
-  const AllPostsWithHoc = withHello(AllPosts);
-  const SinglePostWithHoc = withHello(SinglePost);
+  const AllPostsWithHoc = withFetchAndHello(AllPosts);
+  const SinglePostWithHoc = withFetchAndHello(SinglePost);
   const PathNotFoundWithHoc = withHello(pageNotFound);
 
   return useRoutes([
-    { path: "/posts", element: <AllPostsWithHoc /> },
-    { path: "/post/:id", element: <SinglePostWithHoc /> }, // (\\d+) Regex for numbers only?
+    {
+      path: "/posts",
+      element: <AllPostsWithHoc helloMessage={helloMessage} />,
+    },
+    {
+      path: `/post/:postId`,
+      element: <SinglePostWithHoc helloMessage={helloMessage} />,
+    }, // (\\d+) Regex for numbers only?
     /** Default navigation to /posts */
     { path: "/", element: <Navigate to="/posts" /> },
     /** Non-existent path */
-    { path: "*", element: <PathNotFoundWithHoc /> },
+    { path: "*", element: <PathNotFoundWithHoc helloMessage={helloMessage} /> },
   ]);
 }

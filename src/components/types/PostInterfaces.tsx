@@ -1,3 +1,15 @@
+import { NavigateFunction } from "react-router-dom";
+
+export interface allPosts extends componentHello {
+  allInfo: [post[], user[], comment[]];
+  navigate: NavigateFunction;
+}
+
+export interface singlePost extends componentHello {
+  allInfo: [post[], user[], comment[]];
+  postId: number;
+}
+
 export interface post {
   id: number;
   userId: number;
@@ -15,4 +27,9 @@ export interface comment {
   postId: number;
   name: string;
   body: string;
+}
+
+export interface componentHello {
+  helloMessage: string;
+  componentName: string;
 }

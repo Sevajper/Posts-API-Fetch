@@ -1,4 +1,4 @@
-const fetchInfo = async (url: string): Promise<any> => {
+const fetchPostInfo = async (url: string): Promise<any> => {
   return await fetch(url).then(async (response: Response) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -7,4 +7,4 @@ const fetchInfo = async (url: string): Promise<any> => {
   });
 };
 
-export default fetchInfo;
+export default fetchPostInfo;
