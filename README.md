@@ -1,3 +1,7 @@
+### `yarn install`
+
+Download & install node_modules necessary to run the project.
+
 # How does it work?
 
 ![Final](https://user-images.githubusercontent.com/26602087/143312120-69f8dfa2-2510-4545-a290-2246efa090d8.jpg)
