@@ -1,3 +1,7 @@
+# How does it work?
+
+![Final](https://user-images.githubusercontent.com/26602087/143311824-d659880e-63fc-4c32-9777-7669a2aa3f47.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
