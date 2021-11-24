@@ -1,6 +1,6 @@
 # How does it work?
 
-![Final](https://user-images.githubusercontent.com/26602087/143311824-d659880e-63fc-4c32-9777-7669a2aa3f47.png)
+![Final](https://user-images.githubusercontent.com/26602087/143311982-b33c9d08-bb0d-49d7-bcc6-7109dce71a5f.jpeg)
 
 # Getting Started with Create React App
 
