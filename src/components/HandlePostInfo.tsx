@@ -7,22 +7,29 @@ import {
   singlePost,
 } from "./types/PostInterfaces";
 
+/**
+ * Shows all posts from https://jsonplaceholder.typicode.com/posts
+ * or filtered posts if filteredUserInfoArray exists.
+ *
+ * With a big number of posts we would limit the ones we show at a time with page numbers,
+ * but that is not needed for 100 posts.
+ * @return An array of JSX.Elements or "No results found"
+ */
 export const getAllPostsWithComments = (
   toggleComment: (postId: number) => void,
-  openComment: number[],
+  commentIdArr: number[],
   { allInfo, navigate }: allPosts,
-  filteredUserInfoArray?: number[]
+  filteredUserInfoArray?: user[]
 ) => {
   const postInfo = allInfo[0];
   const commentInfo = allInfo[2];
-  let userInfo: any;
+  let userInfo: user[];
 
   !filteredUserInfoArray
     ? (userInfo = allInfo[1])
     : (userInfo = filteredUserInfoArray);
 
   const allPostsArray: Array<JSX.Element> = [];
-  console.log(filteredUserInfoArray);
 
   postInfo.forEach((post: post) => {
     userInfo.forEach((user: user) => {
@@ -32,9 +39,20 @@ export const getAllPostsWithComments = (
             <div className={"post"}>
               <div
                 className={"header"}
-                onClick={() => navigate(`/post/${post.id}`)}
+                onClick={() =>
+                  navigate(`/post/${post.id}`, {
+                    state: {
+                      user: user,
+                      post: post,
+                      commentInfo: commentInfo,
+                    },
+                  })
+                }
               >
-                {getSinglePost(post, user)}
+                <div className={"title"}>{post.title}</div>
+                <div className={"username"}>{user.name}</div>
+                <div className={"separator"} />
+                <div className={"postBody"}>{post.body}</div>
               </div>
 
               <div
@@ -44,7 +62,7 @@ export const getAllPostsWithComments = (
                 Comments
               </div>
 
-              {openComment.includes(post.id) && (
+              {commentIdArr.includes(post.id) && (
                 <div className={"commentSection"}>
                   <div className={"commentTitle"}>Comments</div>
                   <div className={"commentSeparator"} />
@@ -58,11 +76,32 @@ export const getAllPostsWithComments = (
     });
   });
 
-  return allPostsArray;
+  return allPostsArray.length ? (
+    allPostsArray
+  ) : (
+    <div className="noResultsSearch">No results found...</div>
+  );
 };
 
-export const getSinglePostWithComments = ({ allInfo, postId }: singlePost) => {
+/**
+ * Shows a single post with comments based on postId.
+ * If the info has already been fetched from AllPosts and the user just clicked a post
+ * we do not refetch but rather send down the post and user with fetchedInfo.
+ * If the user input the postid in the url by themselves we search for it in allInfo
+ * which has all the posts, users and comments.
+ * @return An array of JSX.Elements or "No results found"
+ */
+export const getSinglePostWithComments = ({
+  allInfo,
+  postId,
+  fetchedInfo,
+}: singlePost) => {
   const singlePostArray: JSX.Element[] = [];
+
+  if (fetchedInfo) {
+    return handleSinglePostWithComments(fetchedInfo);
+  }
+
   const [postInfo, userInfo, commentInfo] = allInfo;
 
   const post = postInfo.find((post: post) => {
@@ -72,69 +111,81 @@ export const getSinglePostWithComments = ({ allInfo, postId }: singlePost) => {
   if (post)
     userInfo.forEach((user: user) => {
       if (user.id === post.userId) {
-        singlePostArray.push(
-          <div className={"postWrapper"} key={post.id}>
-            <div className={"post"}>
-              <div className={"singlePostHeader"}>
-                {getSinglePost(post, user)}
-              </div>
-              <div className={"commentSection"}>
-                <div className={"commentTitle"}>Comments</div>
-                <div className={"commentSeparator"} />
-                {getUsersComments(post.id, commentInfo)}
-              </div>
-            </div>
-          </div>
-        );
+        fetchedInfo = { post, user, commentInfo };
+        singlePostArray.push(handleSinglePostWithComments(fetchedInfo));
       }
     });
 
   return singlePostArray;
 };
 
+export const handleSinglePostWithComments = (
+  info: singlePost["fetchedInfo"]
+) => {
+  return (
+    <div className={"postWrapper"} key={info.post.id}>
+      <div className={"post"}>
+        <div className={"singlePostHeader"}>
+          <div className={"title"}>{info.post.title}</div>
+          <div className={"username"}>{info.user.name}</div>
+          <div className={"separator"} />
+          <div className={"postBody"}>{info.post.body}</div>
+        </div>
+        <div className={"commentSection"}>
+          <div className={"commentTitle"}>Comments</div>
+          <div className={"commentSeparator"} />
+          {getUsersComments(info.post.id, info.commentInfo)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const getUsersComments = (
   postId: number,
-  commentInfo: comment[]
+  commentInfo: comment[],
+  isFetchedSingleComment: boolean = false
 ): Array<React.ReactNode> => {
-  const commentsArr: Array<JSX.Element> = [];
+  const commentsArr: Array<JSX.Element> | Array<number> = [];
 
   commentInfo.forEach((comment: comment) => {
     if (postId === comment.postId) {
-      commentsArr.push(
-        <div className={"comment"} key={comment.id}>
-          <div className={"commentName"}>{comment.name}</div>
-          <div className={"commentBody"}>{comment.body}</div>
-        </div>
-      );
+      !isFetchedSingleComment
+        ? (commentsArr as Array<JSX.Element>).push(
+            <div className={"comment"} key={comment.id}>
+              <div className={"commentName"}>{comment.name}</div>
+              <div className={"commentBody"}>{comment.body}</div>
+            </div>
+          )
+        : (commentsArr as Array<number | string>).push(
+            comment.id,
+            comment.name,
+            comment.body
+          );
     }
   });
   return commentsArr;
 };
 
-export const getSinglePost = (post: post, user: user) => {
-  return (
-    <>
-      <div className={"title"}>{post.title}</div>
-      <div className={"username"}>{user.name}</div>
-      <div className={"separator"} />
-      <div className={"postBody"}>{post.body}</div>
-    </>
-  );
-};
-
+/**
+ * Filters userInfo according to search input.
+ * @return getAllPostsWithComments function with filtered array of posts as input.
+ */
 export const getFilteredPosts = (
   toggleComment: (postId: number) => void,
-  openComment: number[],
+  commentIdArr: number[],
   searchInput: string,
   props: allPosts
 ) => {
   const userInfo = props.allInfo[1];
-  const filteredUserInfoArray: any[] = [];
+  const filteredUserInfoArray: user[] = [];
 
-  userInfo.filter((user: any) =>
-    Object.keys(user).forEach((key) => {
+  userInfo.filter((user: user) =>
+    Object.keys(user).forEach(() => {
       if (
-        String(user[key]).includes(searchInput) &&
+        (String(user["name"]).includes(searchInput) ||
+          String(user["username"]).includes(searchInput) ||
+          String(user["email"]).includes(searchInput)) &&
         !filteredUserInfoArray.find((userObj) => userObj.id === user.id)
       ) {
         filteredUserInfoArray.push(user);
@@ -144,7 +195,7 @@ export const getFilteredPosts = (
 
   return getAllPostsWithComments(
     toggleComment,
-    openComment,
+    commentIdArr,
     props,
     filteredUserInfoArray
   );

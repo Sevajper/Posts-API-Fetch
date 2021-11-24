@@ -7,8 +7,7 @@ const SinglePost = (props: singlePost): JSX.Element => {
     () => console.log(`${props.helloMessage} ${props.componentName}`),
     [props.helloMessage, props.componentName]
   );
-
-  return <div className="allPosts"> {getSinglePostWithComments(props)}</div>;
+  return <div className="singlePost"> {getSinglePostWithComments(props)}</div>;
 };
 
 export default SinglePost;

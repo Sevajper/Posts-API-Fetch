@@ -8,6 +8,7 @@ export interface allPosts extends componentHello {
 export interface singlePost extends componentHello {
   allInfo: [post[], user[], comment[]];
   postId: number;
+  fetchedInfo: { post: post; user: user; commentInfo: comment[] };
 }
 
 export interface post {
@@ -19,7 +20,9 @@ export interface post {
 
 export interface user {
   id: number;
+  username: string;
   name: string;
+  email: string;
 }
 
 export interface comment {

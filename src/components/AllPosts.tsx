@@ -10,25 +10,32 @@ const AllPosts = (props: allPosts): JSX.Element => {
   );
 
   const [searchInput, setSearchInput] = useState("");
-  const [openComment, setOpenComment] = useState([0]);
+  const [commentIdArr, setCommentIdArr] = useState([-1]);
 
+  /**
+   * Checks whether to show comments for each post or not.
+   */
   const toggleComment = (postId: number) => {
-    !openComment.includes(postId)
-      ? setOpenComment((prevArray) => [...prevArray, postId])
-      : setOpenComment((prevArray) => prevArray.filter((id) => id !== postId));
+    !commentIdArr.includes(postId)
+      ? setCommentIdArr((prevArray) => [...prevArray, postId])
+      : setCommentIdArr((prevArray) => prevArray.filter((id) => id !== postId));
   };
 
   const searchInputOnChange = (event: any) => {
-    console.log(event.target.value);
     setSearchInput(event.target.value);
   };
 
   return (
     <div className={"allPosts"}>
-      <input value={searchInput} onChange={searchInputOnChange} />
+      <input
+        className={"searchInput"}
+        value={searchInput}
+        onChange={searchInputOnChange}
+        placeholder="Search by username, name, email"
+      />
       {!searchInput
-        ? getAllPostsWithComments(toggleComment, openComment, props)
-        : getFilteredPosts(toggleComment, openComment, searchInput, props)}
+        ? getAllPostsWithComments(toggleComment, commentIdArr, props)
+        : getFilteredPosts(toggleComment, commentIdArr, searchInput, props)}
     </div>
   );
 };

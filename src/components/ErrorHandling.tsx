@@ -3,9 +3,10 @@ import "./styles/ErrorHandling.styles.css";
 import { componentHello } from "./types/PostInterfaces";
 
 const PageNotFound = (props: componentHello): JSX.Element => {
-  useEffect(() => {
-    console.log(`${props.helloMessage} ${props.componentName}`);
-  }, [props.helloMessage, props.componentName]);
+  useEffect(
+    () => console.log(`${props.helloMessage} ${props.componentName}`),
+    [props.helloMessage, props.componentName]
+  );
   return (
     <div className="errorTitle">
       <h1>404</h1>

@@ -1,9 +1,20 @@
 .allPosts {
   display: flex;
-  align-items: center;
+  background-color: #222831;
   flex-direction: column;
-  font-family: "Gill Sans";
-  max-width: 1200px;
+  min-width: 1200px;
+  min-height: 1200px;
+  padding: 20px 200px;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.singlePost {
+  display: flex;
+  background-color: #222831;
+  flex-direction: column;
+  min-width: 1200px;
+  padding: 20px 40px;
 }
 
 .separator {
@@ -18,27 +29,26 @@
 .singlePostHeader {
   margin-bottom: 12px;
   padding: 20px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-radius: 20px;
 }
 
 .header:hover {
-  text-shadow: 1px 1px;
   cursor: pointer;
+  transform: scale(1.01);
 }
 .postWrapper {
-  background-color: #eeeeee;
-  padding: 0 40px;
+  align-items: center;
+  font-family: "Gill Sans";
+  max-width: 1200px;
 }
 
 .post {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
-  margin: 16px;
+  margin: 20px 0;
   padding: 20px;
   background-color: #ffffff;
-  min-width: 1200px;
 }
 
 .title {
@@ -59,16 +69,25 @@
 
 .toggleCommentsButton {
   width: fit-content;
-  padding: 5px;
+  padding: 8px 20px;
   color: #1a0dab;
   cursor: pointer;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 18px;
   user-select: none;
 }
 
 .toggleCommentsButton:hover {
-  background-color: #bbe1fa;
+  cursor: pointer;
+  background-color: #222831;
+  color: rgb(233, 233, 233);
+  border-radius: 5px;
+}
+
+.toggleCommentsButton:visited {
+  background-color: #222831;
+  color: rgb(233, 233, 233);
+  border-radius: 5px;
 }
 
 .commentSection {
@@ -112,4 +131,21 @@
 .commentBody {
   filter: opacity(0.9);
   font-size: 14px;
+}
+
+.searchInput {
+  width: 210px;
+  height: 20px;
+  outline: none;
+}
+
+.noResultsSearch {
+  margin: 20px 0 0 5px;
+  font-size: 24px;
+  color: #fff;
+}
+
+.loadingText {
+  font-size: 32px;
+  font-weight: bold;
 }

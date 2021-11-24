@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import fetchPostInfo from "./FetchPostInfo";
+import fetchInfoAndSetLocalStorage from "./FetchInfoAndSetLocalStorage";
 import { apiPostsUrl, apiUsersUrl, apiCommentsUrl } from "./Urls";
 import { useNavigate, useParams } from "react-router-dom";
 import { user, post, comment } from "./types/PostInterfaces";
 import PageNotFound from "./ErrorHandling";
-import { helloMessage } from "./MainAppWithRoutes";
+
+const helloMessage = "Hello from";
 
 export const withFetchAndHello =
   (WrappedComponent: any) =>
@@ -23,25 +24,43 @@ export const withFetchAndHello =
     const allInfo = [postInfo, userInfo, commentInfo];
 
     useEffect(() => {
-      (async () => {
-        setPostInfo(await fetchPostInfo(apiPostsUrl));
-        setUserInfo(await fetchPostInfo(apiUsersUrl));
-        setCommentInfo(await fetchPostInfo(apiCommentsUrl));
-      })()
-        .catch((error) => {
-          console.error(error);
-          setError(error);
-          return error;
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      /*
+       * Since I know the api won't change it's okay to use
+       * local storage and not refetch the data.
+       */
+      if (
+        !localStorage.getItem("post-info") ||
+        !localStorage.getItem("user-info") ||
+        !localStorage.getItem("comment-info")
+      ) {
+        (async () => {
+          setPostInfo(await fetchInfoAndSetLocalStorage(apiPostsUrl, "post"));
+          setUserInfo(await fetchInfoAndSetLocalStorage(apiUsersUrl, "user"));
+          setCommentInfo(
+            await fetchInfoAndSetLocalStorage(apiCommentsUrl, "comment")
+          );
+        })()
+          .catch((error) => {
+            console.error(error);
+            setError(error);
+            return error;
+          })
+          .finally(() => setLoading(false));
+      } else {
+        setPostInfo(JSON.parse(localStorage.getItem("post-info") as string));
+        setUserInfo(JSON.parse(localStorage.getItem("user-info") as string));
+        setCommentInfo(
+          JSON.parse(localStorage.getItem("comment-info") as string)
+        );
+        setLoading(false);
+      }
     }, []);
 
-    if (loading) return <div>"Loading..."</div>; // Skeleton-UI ?
-    if (error) return <div>"Error!"</div>;
+    if (loading) return <div className="loadingText">Loading...</div>; // Skeleton-UI ?
+    if (error) return <PathNotFoundWithHoc helloMessage={helloMessage} />;
 
     if (postId) {
+      // Check if post exists when user manually types postId in url
       const postFound = !!postInfo.find((post) => post.id === Number(postId));
 
       if (!postFound)
@@ -54,15 +73,21 @@ export const withFetchAndHello =
         navigate={navigate}
         postId={postId}
         componentName={WrappedComponent.name}
+        helloMessage={helloMessage}
         {...props}
       />
     );
   };
 
 export const withHello =
-  (WrappedComponent: any) =>
+  (WrappedComponent: any, state?: any) =>
   ({ ...props }) => {
     return (
-      <WrappedComponent componentName={WrappedComponent.name} {...props} />
+      <WrappedComponent
+        componentName={WrappedComponent.name}
+        helloMessage={helloMessage}
+        fetchedInfo={state}
+        {...props}
+      />
     );
   };
