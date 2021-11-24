@@ -1,5 +1,5 @@
 import { getSinglePostWithComments } from "./HandlePostInfo";
-import { singlePost } from "./types/PostInterfaces";
+import { singlePost } from "../types/PostInterfaces";
 import { useEffect } from "react";
 
 const SinglePost = (props: singlePost): JSX.Element => {

@@ -1,8 +1,8 @@
 import { Navigate, useRoutes, useLocation } from "react-router-dom";
-import AllPosts from "./AllPosts";
-import pageNotFound from "./ErrorHandling";
+import AllPosts from "./Posts/AllPosts";
+import pageNotFound from "./ErrorHandling/ErrorHandling";
 import { withHello, withFetchAndHello } from "./HOCs";
-import SinglePost from "./SinglePost";
+import SinglePost from "./Posts/SinglePost";
 
 export default function MainAppWithRoutes() {
   const location = useLocation();

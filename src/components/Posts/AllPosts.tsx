@@ -1,6 +1,6 @@
 import { getAllPostsWithComments, getFilteredPosts } from "./HandlePostInfo";
-import { allPosts } from "./types/PostInterfaces";
-import "./styles/AllPosts.styles.css";
+import { allPosts } from "../types/PostInterfaces";
+import "./AllPosts.styles.css";
 import { useState, useEffect } from "react";
 
 const AllPosts = (props: allPosts): JSX.Element => {

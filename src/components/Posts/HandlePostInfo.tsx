@@ -5,7 +5,7 @@ import {
   comment,
   allPosts,
   singlePost,
-} from "./types/PostInterfaces";
+} from "../types/PostInterfaces";
 
 /**
  * Shows all posts from https://jsonplaceholder.typicode.com/posts

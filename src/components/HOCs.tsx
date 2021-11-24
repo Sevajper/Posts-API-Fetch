@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import fetchInfoAndSetLocalStorage from "./FetchInfoAndSetLocalStorage";
-import { apiPostsUrl, apiUsersUrl, apiCommentsUrl } from "./Urls";
+import fetchInfoAndSetLocalStorage from "./Api/FetchInfoAndSetLocalStorage";
+import { apiPostsUrl, apiUsersUrl, apiCommentsUrl } from "./Api/Urls";
 import { useNavigate, useParams } from "react-router-dom";
 import { user, post, comment } from "./types/PostInterfaces";
-import PageNotFound from "./ErrorHandling";
+import PageNotFound from "./ErrorHandling/ErrorHandling";
 
 const helloMessage = "Hello from";
 

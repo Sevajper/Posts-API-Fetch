@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import "./styles/ErrorHandling.styles.css";
-import { componentHello } from "./types/PostInterfaces";
+import "./ErrorHandling.styles.css";
+import { componentHello } from "../types/PostInterfaces";
 
 const PageNotFound = (props: componentHello): JSX.Element => {
   useEffect(
